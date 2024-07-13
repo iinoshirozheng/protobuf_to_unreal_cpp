@@ -1,0 +1,13 @@
+syntax = "proto3";
+// test1
+message R2R_FTGCharacter {
+  string NAMe = 1; // test123
+  int32 id = 2;
+  string email = 3;
+}
+
+message R2R_FTGPlayer {
+  repeated string rum = 1; // test123
+  int32 PlayerId = 2;
+  string TEXT = 3;
+}
