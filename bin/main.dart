@@ -64,7 +64,7 @@ const String version = '0.0.1';
 
 void main() {
   final protoFilePath = 'FTGTestingProtobuf.proto';
-  final protoContent = File(protoFilePath).readAsStringSync();
+  var protoContent = File(protoFilePath).readAsStringSync();
   final parser = UnrealProtobufParser(protoContent);
   parser.parseMessages();
   parser.parseEnumMessages();
@@ -73,5 +73,5 @@ void main() {
   for (var message in parser.getMessages) {
     objectGenerator.generateMessageCode(message);
   }
-  // print(objectGenerator.getGeneratedUnrealCode);
+  print(objectGenerator.getGeneratedUnrealCode);
 }

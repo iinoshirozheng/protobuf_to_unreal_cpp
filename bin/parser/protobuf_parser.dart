@@ -2,10 +2,18 @@ import '../matching/matching_define.dart';
 import '../prototype/protobuf_message.dart';
 
 class UnrealProtobufParser {
-  final String content;
+  late final String content;
   List<ProtobufMessage> protobufMessage = [];
   get getMessages => protobufMessage;
-  UnrealProtobufParser(this.content);
+  UnrealProtobufParser(String protobufContent) {
+    content = removeComments(protobufContent);
+  }
+
+  String removeComments(String content) {
+    content = content.replaceAll(ProtobufRegExp.singleLineComments, '');
+    content = content.replaceAll(ProtobufRegExp.multiLineComments, '');
+    return content;
+  }
 
   void parseMessages() {
     for (final messageMatch in ProtobufRegExp.message.allMatches(content)) {

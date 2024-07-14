@@ -3,7 +3,7 @@ import 'package:yaml/yaml.dart';
 import 'matching_define.dart';
 
 class TypeMatching {
-  static Map<String, String> proto2UEMap = {};
+  late Map<String, String> proto2UEMap;
 
   TypeMatching() {
     // Load the configuration file.
@@ -17,11 +17,34 @@ class TypeMatching {
         Map<String, String>.from(yamlMap[defaultTypeMatchingProtobufToUE]);
   }
 
-  static String mapProtobufToUnrealType(String protoType) {
-    if (proto2UEMap.containsKey(protoType)) {
-      return proto2UEMap[protoType]!;
-    } else {
-      throw UnimplementedError('Type "$protoType" is not implemented.');
+  String mapProtobufToUnrealType(String protoTypeString) {
+    // Check if protoType exists in the proto2UEMap
+    if (proto2UEMap.containsKey(protoTypeString)) {
+      return proto2UEMap[protoTypeString]!;
     }
+
+    if (isArray(protoTypeString)) {
+      var typeArr = protoTypeString.split(' ');
+      return '${mapProtobufToUnrealType(typeArr.first)}<${mapProtobufToUnrealType(typeArr.last)}>';
+    }
+
+    if (isMap(protoTypeString)) {
+      var mapType =
+          ProtobufRegExp.mapTypeSplitField.firstMatch(protoTypeString);
+      if (mapType != null && mapType.groupCount == 3) {
+        String mapStr = mapProtobufToUnrealType(mapType.group(1)!);
+        String mapKey = mapProtobufToUnrealType(mapType.group(2)!);
+        String mapValue = mapProtobufToUnrealType(mapType.group(3)!);
+        return '$mapStr<$mapKey, $mapValue>';
+      }
+    }
+
+    throw UnimplementedError('Type "$protoTypeString" is not implemented.');
   }
+
+  bool isArray(String protoTypeString) =>
+      protoTypeString.contains(ProtobufRegExp.arrayTypeField);
+
+  bool isMap(String protoTypeString) =>
+      protoTypeString.contains(ProtobufRegExp.mapTypeField);
 }

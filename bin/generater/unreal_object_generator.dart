@@ -5,6 +5,7 @@ import '../matching/type_matching.dart';
 class UnrealObjectGenerator {
   late String protoFilePath;
   late StringBuffer buffer;
+  final matchType = TypeMatching();
   static const String tab = "    ";
   get getGeneratedUnrealCode => buffer.toString();
   GenerateOption genOption = GenerateOption();
@@ -35,7 +36,7 @@ class UnrealObjectGenerator {
     for (final field in message.fields) {
       buffer.writeln('$tab${genOption.childClass.propertyMacro}');
       buffer.writeln(
-          '$tab${TypeMatching.mapProtobufToUnrealType(field.type)} ${field.name};');
+          '$tab${matchType.mapProtobufToUnrealType(field.type)} ${field.name};');
       buffer.writeln();
     }
     buffer.writeln('};');
