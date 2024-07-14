@@ -8,9 +8,10 @@ class UnrealObjectGenerator {
   final matchType = TypeMatching();
   static const String tab = "    ";
   get getGeneratedUnrealCode => buffer.toString();
-  GenerateOption genOption = GenerateOption();
-  UnrealObjectGenerator(this.protoFilePath) {
+  late GenerateOption genOption;
+  UnrealObjectGenerator(this.protoFilePath, currentVersion) {
     generateHeaderCode();
+    genOption = GenerateOption(currentVersion);
   }
 
   void generateHeaderCode() {

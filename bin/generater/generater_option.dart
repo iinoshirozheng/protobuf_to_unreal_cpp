@@ -20,7 +20,7 @@ class GenerateOption {
   late String projectName;
   late UnrealClass parentClass;
   late UnrealClass childClass;
-  GenerateOption() {
+  GenerateOption(currentVersion) {
     // Load the configuration file.
     final File configFile = File(configYamlPath);
     if (!configFile.existsSync()) {
@@ -32,6 +32,10 @@ class GenerateOption {
     print('Configuration loaded: $config');
 
     compilerVersion = config[configVersion] ?? throwException(configVersion);
+    if (compilerVersion != currentVersion) {
+      throw Exception(
+          '設定檔案版本錯誤，請檢查 config.yaml 版本是否一致\n如果不確定可刪除設定檔案，會自動生成最新版的 config.yaml');
+    }
     generatedCodeOutputDir = config[configGenerateOutputDir] ??
         throwException(configGenerateOutputDir);
     projectName =
