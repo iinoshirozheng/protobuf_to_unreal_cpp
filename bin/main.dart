@@ -61,18 +61,17 @@ const String version = '0.0.1';
 //     printUsage(argParser);
 //   }
 // }
-Future<String> readProtoFile(String filePath) async {
-  return await File(filePath).readAsString();
-}
 
-Future<void> main() async {
+void main() {
   final protoFilePath = 'FTGTestingProtobuf.proto';
-  final protoContent = await readProtoFile(protoFilePath);
+  final protoContent = File(protoFilePath).readAsStringSync();
   final parser = UnrealProtobufParser(protoContent);
-  final messages = parser.parse();
-  print(messages);
+  parser.parseMessages();
+  parser.parseEnumMessages();
+  print(parser.getMessages);
   final objectGenerator = UnrealObjectGenerator(protoFilePath);
-  objectGenerator.generateMessageCode(messages);
-  objectGenerator.generateMessageCode(messages);
-  print(objectGenerator.getGeneratedUnrealCode);
+  for (var message in parser.getMessages) {
+    objectGenerator.generateMessageCode(message);
+  }
+  // print(objectGenerator.getGeneratedUnrealCode);
 }

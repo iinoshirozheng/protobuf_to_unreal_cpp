@@ -1,41 +1,20 @@
-class ProtobufMessageField {
-  final String type;
-  final String name;
-  final String number;
-
-  ProtobufMessageField(this.type, this.name, this.number);
-
-  @override
-  String toString() => 'Field(type: $type, name: $name, number: $number)';
-}
-
-class ProtobufMessage {
-  final String name;
-  final List<ProtobufMessageField> fields;
-
-  ProtobufMessage(this.name, this.fields);
-
-  @override
-  String toString() => 'Message(name: $name, fields: $fields)';
-}
+import '../matching/matching_define.dart';
+import '../prototype/protobuf_message.dart';
 
 class UnrealProtobufParser {
   final String content;
-
+  List<ProtobufMessage> protobufMessage = [];
+  get getMessages => protobufMessage;
   UnrealProtobufParser(this.content);
 
-  List<ProtobufMessage> parse() {
-    final messages = <ProtobufMessage>[];
-
-    final messageRegExp = RegExp(r'message\s+(\w+)\s*\{([^}]+)\}');
-    final fieldRegExp = RegExp(r'(\w+)\s+(\w+)\s*=\s*(\d+);');
-
-    for (final messageMatch in messageRegExp.allMatches(content)) {
+  void parseMessages() {
+    for (final messageMatch in ProtobufRegExp.message.allMatches(content)) {
       final messageName = messageMatch.group(1) ?? "";
       final messageBody = messageMatch.group(2) ?? "";
 
       final fields = <ProtobufMessageField>[];
-      for (final fieldMatch in fieldRegExp.allMatches(messageBody)) {
+      for (final fieldMatch
+          in ProtobufRegExp.messageField.allMatches(messageBody)) {
         final fieldType = fieldMatch.group(1) ?? "";
         final fieldName = fieldMatch.group(2) ?? "";
         final fieldNumber = fieldMatch.group(3) ?? "";
@@ -43,9 +22,25 @@ class UnrealProtobufParser {
         fields.add(ProtobufMessageField(fieldType, fieldName, fieldNumber));
       }
 
-      messages.add(ProtobufMessage(messageName, fields));
+      protobufMessage.add(ProtobufMessage(messageName, fields));
     }
+  }
 
-    return messages;
+  void parseEnumMessages() {
+    for (final messageMatch in ProtobufRegExp.enumMessage.allMatches(content)) {
+      final messageName = messageMatch.group(1) ?? "";
+      final messageBody = messageMatch.group(2) ?? "";
+
+      final fields = <ProtobufMessageField>[];
+      for (final fieldMatch
+          in ProtobufRegExp.enumMessageField.allMatches(messageBody)) {
+        final fieldName = fieldMatch.group(1) ?? "";
+        final fieldValue = fieldMatch.group(2) ?? "";
+
+        fields.add(ProtobufMessageField("enum", fieldName, fieldValue));
+      }
+
+      protobufMessage.add(ProtobufMessage(messageName, fields));
+    }
   }
 }

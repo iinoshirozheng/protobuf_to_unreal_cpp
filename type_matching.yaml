@@ -1,0 +1,19 @@
+# protobuf to unreal c++ types 
+protobuf_2_ue:
+  string: FString
+  int32: int32
+  int64: int64
+  uint32: uint32
+  uint64: uint64
+  sint32: int32
+  sint64: int64
+  fixed32: uint32
+  fixed64: uint64
+  sfixed32: int32
+  sfixed64: int64
+  float: float
+  double: double
+  bool: bool
+  bytes: TArray<uint8>
+  repeated: TArray
+  map: TMap

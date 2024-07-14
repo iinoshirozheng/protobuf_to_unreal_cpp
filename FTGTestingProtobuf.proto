@@ -7,7 +7,17 @@ message R2R_FTGCharacter {
 }
 
 message R2R_FTGPlayer {
-  repeated string rum = 1; // test123
+  repeated string r123u4m5 = 1; // test123
   int32 PlayerId = 2;
   string TEXT = 3;
+}
+message Example {
+  repeated int32 numbers = 1;
+  map<int32, string> mapField = 2;
+  string name = 3;
+}
+
+enum Test333{
+  A = 0;
+  B = 1;
 }

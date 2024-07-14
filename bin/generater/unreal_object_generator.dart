@@ -1,5 +1,6 @@
-import "../parser/protobuf_parser.dart";
 import "../generater/generater_option.dart";
+import '../prototype/protobuf_message.dart';
+import '../matching/type_matching.dart';
 
 class UnrealObjectGenerator {
   late String protoFilePath;
@@ -19,37 +20,24 @@ class UnrealObjectGenerator {
       ..writeln('#include "${protoFilePath.split(".").first}.generated.h"');
   }
 
-  void generateMessageCode(List<ProtobufMessage> messages) {
-    for (final message in messages) {
+  void generateMessageCode(ProtobufMessage message) {
+    var className = '${genOption.parentClass.name}_${message.name}';
+    buffer.writeln();
+    buffer.writeln(genOption.childClass.classMacro);
+    buffer.write('class ${genOption.projectName}_API ');
+    buffer.write('$className ');
+    buffer.writeln(': public ${genOption.parentClass.name}');
+    buffer.writeln('{');
+    buffer.writeln('${tab}GENERATED_BODY()');
+    buffer.writeln('${tab}FORCEINLINE $className() {}');
+    buffer.writeln();
+    buffer.writeln('public:');
+    for (final field in message.fields) {
+      buffer.writeln('$tab${genOption.childClass.propertyMacro}');
+      buffer.writeln(
+          '$tab${TypeMatching.mapProtobufToUnrealType(field.type)} ${field.name};');
       buffer.writeln();
-      buffer.writeln(genOption.childClass.classMacro);
-      buffer.write('class ${genOption.projectName}_API ');
-      buffer.write('${genOption.parentClass.name}_${message.name} ');
-      buffer.writeln(': public ${genOption.parentClass.name}');
-      buffer.writeln('{');
-      buffer.writeln('${tab}GENERATED_BODY()');
-      buffer.writeln('$tab${genOption.parentClass.name}${message.name}() {}');
-      buffer.writeln();
-      buffer.writeln('public:');
-      for (final field in message.fields) {
-        buffer.writeln('$tab${genOption.childClass.propertyMacro}');
-        buffer.writeln(
-            '$tab${mapProtobufToUnrealType(field.type)} ${field.name};');
-        buffer.writeln();
-      }
-      buffer.writeln('};');
     }
-  }
-}
-
-String mapProtobufToUnrealType(String protoType) {
-  switch (protoType) {
-    case 'string':
-      return 'FString';
-    case 'int32':
-      return 'int32';
-    // Add more type mappings as needed
-    default:
-      throw UnimplementedError('Type $protoType is not implemented.');
+    buffer.writeln('};');
   }
 }

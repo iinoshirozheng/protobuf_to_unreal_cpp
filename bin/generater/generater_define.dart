@@ -15,7 +15,7 @@ const String defaultYamlFile = '''
 
 /////////////////////////////////////////////////////////////////////
 
-$configVersion: 0.0.1
+$configVersion: 1.0.0
 $configGenerateOutputDir: ""
 $configProjectName: "SGF"
 
