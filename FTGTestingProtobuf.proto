@@ -16,3 +16,9 @@ message R2R_FTGPlayer {
 //   map<int32, string> mapField = 2;
 //   string name = 3;
 // }
+
+enum Example {
+  A = 0;
+  BB = 1;
+  CCC = 3;
+}

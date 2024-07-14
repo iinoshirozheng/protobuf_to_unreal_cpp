@@ -7,13 +7,17 @@ const version = "1.0.0";
 void main() {
   final protoFilePath = 'FTGTestingProtobuf.proto';
   var protoContent = File(protoFilePath).readAsStringSync();
-  final parser = UnrealProtobufParser(protoContent);
-  parser.parseMessages();
-  parser.parseEnumMessages();
+  final parser = UnrealProtobufParser(protoContent)
+    ..parseMessages()
+    ..parseEnums();
   print(parser.getMessages);
   final objectGenerator = UnrealObjectGenerator(protoFilePath, version);
+  objectGenerator.generateBaseClassCode();
   for (var message in parser.getMessages) {
-    objectGenerator.generateMessageCode(message);
+    objectGenerator.generateClassCode(message);
+  }
+  for (var enumMessage in parser.protobufEnums) {
+    objectGenerator.generateEnumCode(enumMessage);
   }
   print(objectGenerator.getGeneratedUnrealCode);
 }

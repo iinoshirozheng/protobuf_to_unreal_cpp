@@ -18,3 +18,5 @@ child_class:
   class_macro: UCLASS(BlueprintType, Blueprintable)
   property_macro: UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="SGF|ProtobufMessage")
   
+enum_class:
+  macro: UENUM(BlueprintType)

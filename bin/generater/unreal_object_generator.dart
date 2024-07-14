@@ -22,7 +22,22 @@ class UnrealObjectGenerator {
       ..writeln('#include "${protoFilePath.split(".").first}.generated.h"');
   }
 
-  void generateMessageCode(ProtobufMessage message) {
+  void generateBaseClassCode() {
+    var className = genOption.parentClass.name;
+    buffer.writeln();
+    buffer.writeln(genOption.childClass.classMacro);
+    buffer.write('class ${genOption.projectName}_API ');
+    buffer.write('$className ');
+    buffer.writeln(': public ${genOption.parentClass.parentClass}');
+    buffer.writeln('{');
+    buffer.writeln('${tab}GENERATED_BODY()');
+    buffer.writeln('public:');
+    buffer.writeln('${tab}FORCEINLINE $className() {}');
+    buffer.writeln();
+    buffer.writeln('};');
+  }
+
+  void generateClassCode(ProtobufMessage message) {
     var className = '${genOption.parentClass.name}_${message.name}';
     buffer.writeln();
     buffer.writeln(genOption.childClass.classMacro);
@@ -31,15 +46,28 @@ class UnrealObjectGenerator {
     buffer.writeln(': public ${genOption.parentClass.name}');
     buffer.writeln('{');
     buffer.writeln('${tab}GENERATED_BODY()');
+    buffer.writeln('public:');
     buffer.writeln('${tab}FORCEINLINE $className() {}');
     buffer.writeln();
-    buffer.writeln('public:');
     for (final field in message.fields) {
       buffer.writeln('$tab${genOption.childClass.propertyMacro}');
       buffer.writeln(
           '$tab${matchType.mapProtobufToUnrealType(field.type)} ${field.name};');
       buffer.writeln();
     }
+    buffer.writeln('};');
+  }
+
+  void generateEnumCode(ProtobufMessage protobufEnum) {
+    var className = 'E${protobufEnum.name}';
+    buffer.writeln();
+    buffer.writeln(genOption.enumClassMacro);
+    buffer.writeln('enum class $className : uint8');
+    buffer.writeln('{');
+    for (final field in protobufEnum.fields) {
+      buffer.writeln('$tab${field.name} = ${field.number},');
+    }
+    buffer.writeln('${tab}Size');
     buffer.writeln('};');
   }
 }

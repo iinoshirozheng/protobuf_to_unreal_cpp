@@ -3,8 +3,10 @@ import '../prototype/protobuf_message.dart';
 
 class UnrealProtobufParser {
   late final String content;
-  List<ProtobufMessage> protobufMessage = [];
-  get getMessages => protobufMessage;
+  List<ProtobufMessage> protobufMessages = [];
+  List<ProtobufMessage> protobufEnums = [];
+  get getMessages => protobufMessages;
+  get getEnums => protobufEnums;
   UnrealProtobufParser(String protobufContent) {
     content = removeComments(protobufContent);
   }
@@ -30,11 +32,11 @@ class UnrealProtobufParser {
         fields.add(ProtobufMessageField(fieldType, fieldName, fieldNumber));
       }
 
-      protobufMessage.add(ProtobufMessage(messageName, fields));
+      protobufMessages.add(ProtobufMessage(messageName, fields));
     }
   }
 
-  void parseEnumMessages() {
+  void parseEnums() {
     for (final messageMatch in ProtobufRegExp.enumMessage.allMatches(content)) {
       final messageName = messageMatch.group(1) ?? "";
       final messageBody = messageMatch.group(2) ?? "";
@@ -48,7 +50,7 @@ class UnrealProtobufParser {
         fields.add(ProtobufMessageField("enum", fieldName, fieldValue));
       }
 
-      protobufMessage.add(ProtobufMessage(messageName, fields));
+      protobufEnums.add(ProtobufMessage(messageName, fields));
     }
   }
 }

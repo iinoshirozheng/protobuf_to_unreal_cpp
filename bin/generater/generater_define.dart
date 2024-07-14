@@ -7,6 +7,9 @@ const String configClassMacro = "class_macro";
 const String configPropertyMacro = "property_macro";
 const String configProjectName = "ue_project_name";
 const String configYamlPath = 'config.yaml';
+const String configMacro = 'macro';
+const String configEnumClass = 'enum_class';
+
 const String protobufMessageName = "#ProtobufMessageName#";
 const String defaultYamlFile = '''
 # Description: Settings for the application
@@ -31,5 +34,7 @@ $configChildClass:
   $configClassMacro: "UCLASS(BlueprintType, Blueprintable)"
   $configPropertyMacro: "UPROPERTY(BlueprintReadWrite)"
 
+$configEnumClass:
+  $configMacro: UENUM(BlueprintType)
 /////////////////////////////////////////////////////////////////////
 ''';

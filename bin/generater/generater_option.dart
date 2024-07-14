@@ -20,6 +20,7 @@ class GenerateOption {
   late String projectName;
   late UnrealClass parentClass;
   late UnrealClass childClass;
+  late String enumClassMacro;
   GenerateOption(currentVersion) {
     // Load the configuration file.
     final File configFile = File(configYamlPath);
@@ -58,6 +59,9 @@ class GenerateOption {
         config[configChildClass]?[configPropertyMacro] ??
             throwException("$configChildClass::$configPropertyMacro"),
         parentClass.name);
+
+    enumClassMacro = config[configEnumClass]?[configMacro] ??
+        throwException("$configEnumClass::$configMacro");
   }
 
   @override
@@ -80,6 +84,8 @@ Generate Class Option:
     property macro : ${childClass.propertyMacro}
     parent class : ${childClass.parentClass}
 
+  enum class :
+    enum class macro : $enumClassMacro
 ''';
   }
 }
