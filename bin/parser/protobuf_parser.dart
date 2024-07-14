@@ -17,11 +17,23 @@ class UnrealProtobufParser {
     return content;
   }
 
+  String parseMessageBody(RegExpMatch messageMatched) {
+    final start = messageMatched.end;
+    int braceCount = 1;
+    for (int findEnd = start; findEnd < content.length; findEnd++) {
+      if (content[findEnd] == '{') braceCount++;
+      if (content[findEnd] == '}') braceCount--;
+      if (braceCount == 0) {
+        return content.substring(start, findEnd);
+      }
+    }
+    return ""; // Error case
+  }
+
   void parseMessages() {
     for (final messageMatch in ProtobufRegExp.message.allMatches(content)) {
       final messageName = messageMatch.group(1) ?? "";
-      final messageBody = messageMatch.group(2) ?? "";
-
+      final messageBody = parseMessageBody(messageMatch);
       final fields = <ProtobufMessageField>[];
       for (final fieldMatch
           in ProtobufRegExp.messageField.allMatches(messageBody)) {

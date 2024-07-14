@@ -10,7 +10,7 @@ void main() {
   final parser = UnrealProtobufParser(protoContent)
     ..parseMessages()
     ..parseEnums();
-  print(parser.getMessages);
+
   final objectGenerator = UnrealObjectGenerator(protoFilePath, version);
   objectGenerator.generateBaseClassCode();
   for (var message in parser.getMessages) {

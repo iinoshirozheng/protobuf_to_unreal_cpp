@@ -3,7 +3,9 @@ class ProtobufRegExp {
   static final singleLineComments = RegExp(r'//.*');
   // Remove multi-line comments (/* comment */)
   static final multiLineComments = RegExp(r'/\*.*?\*/', dotAll: true);
-  static final message = RegExp(r'message\s+(\w+)\s*\{([^}]+)\}');
+  static final message = RegExp(r'message\s+(\w+)\s*{', dotAll: true);
+  // Regex for parsing messages and handling nested enums
+  // static final message = RegExp(r'message\s+(\w+)\s*\{([^}]*)\}', dotAll: true);
   static final messageField =
       RegExp(r'(repeated\s+\w+|map<\w+,\s*\w+>|\w+)\s+(\w+)\s*=\s*(\d+);');
   static final arrayTypeField = RegExp(r'(repeated\s+\w+)');

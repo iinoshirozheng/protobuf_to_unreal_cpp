@@ -7,18 +7,23 @@ message R2R_FTGCharacter {
 }
 
 message R2R_FTGPlayer {
+    enum Example {
+    A = 0;
+    BB = 1;
+    CCC = 3;
+  }
   string r123u4m5 = 1; // test123
   uint32 PlayerId = 2;
   string TEXT = 3;
 }
-// message Example {
-//   repeated int32 numbers = 1;
-//   map<int32, string> mapField = 2;
-//   string name = 3;
-// }
-
-enum Example {
-  A = 0;
-  BB = 1;
-  CCC = 3;
+message Example {
+  repeated int32 numbers = 1;
+  map<int32, string> mapField = 2;
+  string name = 3;
 }
+
+// enum Example {
+//   A = 0;
+//   BB = 1;
+//   CCC = 2;
+// }

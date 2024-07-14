@@ -39,7 +39,7 @@ class TypeMatching {
       }
     }
 
-    throw UnimplementedError('Type "$protoTypeString" is not implemented.');
+    throw UnimplementedError('Type : "$protoTypeString" 型態不支援！');
   }
 
   bool isArray(String protoTypeString) =>

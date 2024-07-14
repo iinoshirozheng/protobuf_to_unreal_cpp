@@ -30,7 +30,6 @@ class GenerateOption {
     }
     final String configString = configFile.readAsStringSync();
     final YamlMap config = loadYaml(configString);
-    print('Configuration loaded: $config');
 
     compilerVersion = config[configVersion] ?? throwException(configVersion);
     if (compilerVersion != currentVersion) {
@@ -67,7 +66,6 @@ class GenerateOption {
   @override
   String toString() {
     return '''
-
 Compiler version : $compilerVersion
 generated code output dir : $generatedCodeOutputDir
 unreal project name : $projectName
