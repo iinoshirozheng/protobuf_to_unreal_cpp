@@ -6,26 +6,24 @@ const String configName = "name";
 const String configClassMacro = "class_macro";
 const String configPropertyMacro = "property_macro";
 const String configProjectName = "ue_project_name";
-const String configYamlPath = 'config.yaml';
+const String configYamlPath = 'settings/config.yaml';
 const String configMacro = 'macro';
 const String configEnumClass = 'enum_class';
 
 const String protobufMessageName = "#ProtobufMessageName#";
 const String defaultYamlFile = '''
 # Description: Settings for the application
-# 此為Compiler的設定檔案，用來設定輸出的路徑，以及類別的參數設定 (如果砍掉會在執行檔案目錄生成一個)
-# 注意每層必須是兩個空格，不然會讀不到!!!!
+# This is the configuration file for the Compiler, used to set the output path and class parameters (if deleted, one will be generated in the executable file directory)
+# Note that each level must be two spaces, otherwise it will not be read!!!!
 
-/////////////////////////////////////////////////////////////////////
-
-$configVersion: 1.0.0
+$configVersion: "1.0.0"
 $configGenerateOutputDir: ""
 $configProjectName: "SGF"
 
 $configParentClass:
-  # Name : 類別名稱 #Name# 為讀取的Proto檔案中的名稱
-  $configName: "UProtobuf"
-  # parent_class_name : 繼承的父類別名稱
+  # Name: Class name, #Name# is the name read from the Proto file
+  $configName: "UObject"
+  # parent_class_name: Name of the inherited parent class
   $configParentClass: "UObject"
   $configClassMacro: "UCLASS()"
   $configPropertyMacro: "UPROPERTY()"
@@ -35,6 +33,5 @@ $configChildClass:
   $configPropertyMacro: "UPROPERTY(BlueprintReadWrite)"
 
 $configEnumClass:
-  $configMacro: UENUM(BlueprintType)
-/////////////////////////////////////////////////////////////////////
+  $configMacro: "UENUM(BlueprintType)"
 ''';

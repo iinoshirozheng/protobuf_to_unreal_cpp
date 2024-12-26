@@ -3,6 +3,9 @@ class ProtobufRegExp {
   static final singleLineComments = RegExp(r'//.*');
   // Remove multi-line comments (/* comment */)
   static final multiLineComments = RegExp(r'/\*.*?\*/', dotAll: true);
+  static final protoFileName = RegExp(r'([^\\/]+)(?=\.\w+$)');
+  static final packageNameSpace =
+      RegExp(r'^\s*package\s+(\S+);\s*$', multiLine: true);
   static final message = RegExp(r'message\s+(\w+)\s*{', dotAll: true);
   // Regex for parsing messages and handling nested enums
   // static final message = RegExp(r'message\s+(\w+)\s*\{([^}]*)\}', dotAll: true);
@@ -15,6 +18,7 @@ class ProtobufRegExp {
   static final enumMessageField = RegExp(r'(\w+)\s*=\s*(\d+);');
 }
 
+const String defaultFilePathTypeMatching = 'settings/type_matching.yaml';
 const String defaultTypeMatchingProtobufToUE = 'protobuf_2_ue';
 const String defaultTypeMatchingYaml = '''
 # protobuf to unreal c++ types 
@@ -36,4 +40,5 @@ $defaultTypeMatchingProtobufToUE:
   bytes: TArray<uint8>
   repeated: TArray
   map: TMap
+  Timestamp: FDateTime
 ''';

@@ -1,12 +1,13 @@
 class ProtobufMessageField {
-  final String type;
+  final String protoType;
   final String name;
   final String number;
 
-  ProtobufMessageField(this.type, this.name, this.number);
+  ProtobufMessageField(this.protoType, this.name, this.number);
 
   @override
-  String toString() => 'Field(type: $type, name: $name, number: $number)';
+  String toString() =>
+      'Field(protoType: $protoType, name: $name, number: $number)';
 }
 
 class ProtobufMessage {
